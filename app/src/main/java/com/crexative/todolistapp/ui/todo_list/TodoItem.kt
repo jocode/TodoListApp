@@ -52,12 +52,12 @@ fun TodoItem(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = it)
             }
-            Checkbox(
-                checked = todo.isDone,
-                onCheckedChange = { isChecked ->
-                    onEvent(TodoListEvent.OnDoneChange(todo, isChecked))
-                }
-            )
         }
+        Checkbox(
+            checked = todo.isDone,
+            onCheckedChange = { isChecked ->
+                onEvent(TodoListEvent.OnDoneChange(todo, isChecked))
+            }
+        )
     }
 }

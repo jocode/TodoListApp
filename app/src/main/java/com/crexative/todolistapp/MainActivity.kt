@@ -3,7 +3,15 @@ package com.crexative.todolistapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.crexative.todolistapp.ui.add_edit_todo.AddEditTodoScreen
 import com.crexative.todolistapp.ui.theme.TodoListAppTheme
+import com.crexative.todolistapp.ui.todo_list.TodoListScreen
+import com.crexative.todolistapp.util.Routes
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -12,7 +20,32 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TodoListAppTheme {
-
+                val navController = rememberNavController()
+                NavHost(
+                    navController = navController,
+                    startDestination = Routes.TODO_LIST
+                ) {
+                    composable(Routes.TODO_LIST) {
+                        TodoListScreen(
+                            onNavigate = {
+                                navController.navigate(it.route)
+                            }
+                        )
+                    }
+                    composable(
+                        route = Routes.ADD_EDIT_TODO + "?todoId={todoId}",
+                        arguments = listOf(
+                            navArgument(name = "todoId") {
+                                type = NavType.IntType
+                                defaultValue = -1
+                            }
+                        )
+                    ) {
+                        AddEditTodoScreen(onPopBackStack = {
+                            navController.popBackStack()
+                        })
+                    }
+                }
             }
         }
     }
